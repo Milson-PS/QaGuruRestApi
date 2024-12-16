@@ -1,24 +1,21 @@
 package tests;
 
-import io.restassured.RestAssured;
-import models.*;
-import org.junit.jupiter.api.BeforeAll;
+import models.LoginBodyModel;
+import models.LoginResponseModel;
+import models.UserBodyModel;
+import models.RegisterBodyModel;
+import models.RegisterResponseModel;
 import org.junit.jupiter.api.Test;
+import specs.UsersSpec;
 
-import static helpers.CustomAllureListener.withCustomTemplates;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
-import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static specs.UsersSpec.*;
 
-public class LoginExtendedTests {
-    @BeforeAll
-    public static void setupRestAssured() {
-        RestAssured.baseURI = "https://reqres.in";
-        RestAssured.basePath = "/api";
-    }
+public class LoginExtendedTests extends TestBase {
 
     @Test
     void loginSuccessful() {
@@ -27,21 +24,14 @@ public class LoginExtendedTests {
         authData.setPassword("cityslicka");
 
         LoginResponseModel response = step("Отправка запроса на аутентификацию и получение токена", () ->
-                given()
-                        .filter(withCustomTemplates())
-                        .log().uri()
-                        .log().body()
-                        .log().headers()
+                given(LoginRequestSpec)
                         .body(authData)
-                        .contentType(JSON)
 
                         .when()
-                        .post("/login")
+                        .post()
 
                         .then()
-                        .log().status()
-                        .log().body()
-                        .statusCode(200)
+                        .spec(LoginResponseSpec)
                         .extract().as(LoginResponseModel.class));
 
         step("Проверка токена", () ->
@@ -54,21 +44,14 @@ public class LoginExtendedTests {
         authData.setEmail("peter@klaven");
 
         LoginResponseModel response = step("Отправка запроса на аутентификацию с неверными данными", () ->
-                given()
-                        .filter(withCustomTemplates())
-                        .log().uri()
-                        .log().body()
-                        .log().headers()
+                given(UsersSpec.LoginRequestSpec)
                         .body(authData)
-                        .contentType(JSON)
 
                         .when()
-                        .post("/login")
+                        .post()
 
                         .then()
-                        .log().status()
-                        .log().body()
-                        .statusCode(400)
+                        .spec(UsersSpec.LoginUnsuccessfulResponseSpec)
                         .extract().as(LoginResponseModel.class));
 
         step("Проверка сообщения об ошибке", () ->
@@ -82,21 +65,14 @@ public class LoginExtendedTests {
         userData.setJob("leader");
 
         step("Создание пользователя", () ->
-                given()
-                        .filter(withCustomTemplates())
-                        .log().uri()
-                        .log().body()
-                        .log().headers()
+                given(UsersSpec.CreateUserRequestSpec)
                         .body(userData)
-                        .contentType(JSON)
 
                         .when()
-                        .post("/users")
+                        .post()
 
                         .then()
-                        .log().status()
-                        .log().body()
-                        .statusCode(201)
+                        .spec(UsersSpec.CreateUserResponseSpec)
                         .body("name", is("morpheus"))
                         .body("job", is("leader")));
     }
@@ -108,21 +84,14 @@ public class LoginExtendedTests {
         userData.setJob("zion resident");
 
         step("Обновление пользователя", () ->
-                given()
-                        .filter(withCustomTemplates())
-                        .log().uri()
-                        .log().body()
-                        .log().headers()
+                given(UsersSpec.UpdateUserRequestSpec)
                         .body(userData)
-                        .contentType(JSON)
 
                         .when()
-                        .put("/users/2")
+                        .put()
 
                         .then()
-                        .log().status()
-                        .log().body()
-                        .statusCode(200)
+                        .spec(UsersSpec.UpdateUserResponseSpec)
                         .body("name", is("morpheus"))
                         .body("job", is("zion resident")));
     }
@@ -134,21 +103,14 @@ public class LoginExtendedTests {
         registerData.setPassword("pistol");
 
         RegisterResponseModel response = step("Регистрация пользователя", () ->
-                given()
-                        .filter(withCustomTemplates())
-                        .log().uri()
-                        .log().body()
-                        .log().headers()
+                given(UsersSpec.RegisterRequestSpec)
                         .body(registerData)
-                        .contentType(JSON)
 
                         .when()
-                        .post("/register")
+                        .post()
 
                         .then()
-                        .log().status()
-                        .log().body()
-                        .statusCode(200)
+                        .spec(UsersSpec.RegisterResponseSpec)
                         .extract().as(RegisterResponseModel.class));
 
         step("Проверка ответа на регистрацию", () -> {

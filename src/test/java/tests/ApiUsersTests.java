@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.notNullValue;
 public class ApiUsersTests {
 
     @BeforeAll
-    public static void setupRestAssured(){
+    public static void setupRestAssured() {
         RestAssured.baseURI = "https://reqres.in";
         RestAssured.basePath = "/api";
     }
@@ -86,6 +86,7 @@ public class ApiUsersTests {
                 .body("token", notNullValue());
 
     }
+
     @Test
     void loginUnSuccessful() {
         String authData = "{\"email\": \"peter@klaven\"}";
