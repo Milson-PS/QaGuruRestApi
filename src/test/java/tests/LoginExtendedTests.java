@@ -5,6 +5,7 @@ import models.LoginResponseModel;
 import models.UserBodyModel;
 import models.RegisterBodyModel;
 import models.RegisterResponseModel;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import specs.UsersSpec;
 
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static specs.UsersSpec.*;
 
+    @Tag("API")
 public class LoginExtendedTests extends TestBase {
 
     @Test
