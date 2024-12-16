@@ -1,10 +1,6 @@
 package tests;
 
-import models.LoginBodyModel;
-import models.LoginResponseModel;
-import models.UserBodyModel;
-import models.RegisterBodyModel;
-import models.RegisterResponseModel;
+import models.*;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import specs.UsersSpec;
