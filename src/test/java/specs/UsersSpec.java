@@ -1,7 +1,6 @@
 package specs;
 
 import io.restassured.builder.ResponseSpecBuilder;
-import io.restassured.internal.http.Status;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
@@ -12,67 +11,55 @@ import static io.restassured.filter.log.LogDetail.STATUS;
 import static io.restassured.http.ContentType.JSON;
 
 public class UsersSpec {
-    public static RequestSpecification LoginRequestSpec = with()
+    public static RequestSpecification loginRequestSpec = with()
             .filter(withCustomTemplates())
-            .log().uri()
-            .log().body()
-            .log().headers()
+            .log().all()
             .contentType(JSON)
-            .baseUri("https://reqres.in")
             .basePath("/api/login");
 
-    public static ResponseSpecification LoginResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification loginResponseSpec = new ResponseSpecBuilder()
             .expectStatusCode(200)
             .log(STATUS)
             .log(BODY)
             .build();
 
-    public static ResponseSpecification LoginUnsuccessfulResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification loginUnsuccessfulResponseSpec = new ResponseSpecBuilder()
             .expectStatusCode(400)
             .log(STATUS)
             .log(BODY)
             .build();
 
-    public static RequestSpecification CreateUserRequestSpec = with()
+    public static RequestSpecification createUserRequestSpec = with()
             .filter(withCustomTemplates())
-            .log().uri()
-            .log().body()
-            .log().headers()
+            .log().all()
             .contentType(JSON)
-            .baseUri("https://reqres.in")
             .basePath("/api/users");
 
-    public static ResponseSpecification CreateUserResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification createUserResponseSpec = new ResponseSpecBuilder()
             .expectStatusCode(201)
             .log(STATUS)
             .log(BODY)
             .build();
 
-    public static RequestSpecification UpdateUserRequestSpec = with()
+    public static RequestSpecification updateUserRequestSpec = with()
             .filter(withCustomTemplates())
-            .log().uri()
-            .log().body()
-            .log().headers()
+            .log().all()
             .contentType(JSON)
-            .baseUri("https://reqres.in")
             .basePath("/api/users/2");
 
-    public static ResponseSpecification UpdateUserResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification updateUserResponseSpec = new ResponseSpecBuilder()
             .expectStatusCode(200)
             .log(STATUS)
             .log(BODY)
             .build();
 
-    public static RequestSpecification RegisterRequestSpec = with()
+    public static RequestSpecification registerRequestSpec = with()
             .filter(withCustomTemplates())
-            .log().uri()
-            .log().body()
-            .log().headers()
+            .log().all()
             .contentType(JSON)
-            .baseUri("https://reqres.in")
             .basePath("/api/register");
 
-    public static ResponseSpecification RegisterResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification registerResponseSpec = new ResponseSpecBuilder()
             .expectStatusCode(200)
             .log(STATUS)
             .log(BODY)

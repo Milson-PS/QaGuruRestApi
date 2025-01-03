@@ -3,7 +3,6 @@ package tests;
 import models.*;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import specs.UsersSpec;
 
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
@@ -12,24 +11,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static specs.UsersSpec.*;
 
-    @Tag("API")
+@Tag("API")
 public class LoginExtendedTests extends TestBase {
 
     @Test
-    void loginSuccessful() {
+    void loginSuccessfulTest() {
         LoginBodyModel authData = new LoginBodyModel();
         authData.setEmail("eve.holt@reqres.in");
         authData.setPassword("cityslicka");
 
         LoginResponseModel response = step("Отправка запроса на аутентификацию и получение токена", () ->
-                given(LoginRequestSpec)
+                given(loginRequestSpec)
                         .body(authData)
-
                         .when()
                         .post()
-
                         .then()
-                        .spec(LoginResponseSpec)
+                        .spec(loginResponseSpec)
                         .extract().as(LoginResponseModel.class));
 
         step("Проверка токена", () ->
@@ -37,19 +34,17 @@ public class LoginExtendedTests extends TestBase {
     }
 
     @Test
-    void loginUnSuccessful() {
+    void loginUnsuccessfulTest() {
         LoginBodyModel authData = new LoginBodyModel();
         authData.setEmail("peter@klaven");
 
         LoginResponseModel response = step("Отправка запроса на аутентификацию с неверными данными", () ->
-                given(UsersSpec.LoginRequestSpec)
+                given(loginRequestSpec)
                         .body(authData)
-
                         .when()
                         .post()
-
                         .then()
-                        .spec(UsersSpec.LoginUnsuccessfulResponseSpec)
+                        .spec(loginUnsuccessfulResponseSpec)
                         .extract().as(LoginResponseModel.class));
 
         step("Проверка сообщения об ошибке", () ->
@@ -57,58 +52,52 @@ public class LoginExtendedTests extends TestBase {
     }
 
     @Test
-    void createUsers() {
+    void createUsersTest() {
         UserBodyModel userData = new UserBodyModel();
         userData.setName("morpheus");
         userData.setJob("leader");
 
         step("Создание пользователя", () ->
-                given(UsersSpec.CreateUserRequestSpec)
+                given(createUserRequestSpec)
                         .body(userData)
-
                         .when()
                         .post()
-
                         .then()
-                        .spec(UsersSpec.CreateUserResponseSpec)
+                        .spec(createUserResponseSpec)
                         .body("name", is("morpheus"))
                         .body("job", is("leader")));
     }
 
     @Test
-    void updateUsers() {
+    void updateUsersTest() {
         UserBodyModel userData = new UserBodyModel();
         userData.setName("morpheus");
         userData.setJob("zion resident");
 
         step("Обновление пользователя", () ->
-                given(UsersSpec.UpdateUserRequestSpec)
+                given(updateUserRequestSpec)
                         .body(userData)
-
                         .when()
                         .put()
-
                         .then()
-                        .spec(UsersSpec.UpdateUserResponseSpec)
+                        .spec(updateUserResponseSpec)
                         .body("name", is("morpheus"))
                         .body("job", is("zion resident")));
     }
 
     @Test
-    void registerSuccessful() {
+    void registerSuccessfulTest() {
         RegisterBodyModel registerData = new RegisterBodyModel();
         registerData.setEmail("eve.holt@reqres.in");
         registerData.setPassword("pistol");
 
         RegisterResponseModel response = step("Регистрация пользователя", () ->
-                given(UsersSpec.RegisterRequestSpec)
+                given(registerRequestSpec)
                         .body(registerData)
-
                         .when()
                         .post()
-
                         .then()
-                        .spec(UsersSpec.RegisterResponseSpec)
+                        .spec(registerResponseSpec)
                         .extract().as(RegisterResponseModel.class));
 
         step("Проверка ответа на регистрацию", () -> {
