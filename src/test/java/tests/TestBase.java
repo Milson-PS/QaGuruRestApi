@@ -7,6 +7,5 @@ public class TestBase {
     @BeforeAll
     public static void setupRestAssured() {
         RestAssured.baseURI = "https://reqres.in";
-        RestAssured.basePath = "/api";
     }
 }
